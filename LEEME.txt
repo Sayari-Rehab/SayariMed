@@ -1,0 +1,212 @@
+====================================================================
+             SAYARI MED — GUÍA COMPLETA Y REPLICACIÓN
+====================================================================
+
+PARTE 1: INSTALACIÓN EN UNA COMPUTADORA NUEVA
+--------------------------------------------------------------------
+Si vas a mover esta carpeta a otra laptop o descargarla de la nube:
+
+1. INSTALAR PYTHON:
+   - Descarga e instala Python desde python.org
+   - ¡IMPORTANTE! Durante la instalación, marca la casilla:
+     "Add Python to PATH"
+
+2. INSTALAR LIBRERÍAS (Solo se hace 1 vez por computadora):
+
+   ✅ OPCIÓN RÁPIDA (RECOMENDADA):
+      - Haz doble clic sobre "INSTALAR.bat" (si existe).
+      - Se abrirá una consola que instalará TODO automáticamente.
+
+   ✅ OPCIÓN MANUAL:
+      - Abre la carpeta del proyecto.
+      - Clic en la barra de direcciones, escribe "cmd" y ENTER.
+      - Ejecuta estos comandos UNO POR UNO:
+
+        python -m venv venv
+        venv\Scripts\activate.bat
+        pip install -r requirements.txt
+
+--------------------------------------------------------------------
+PARTE 2: QUÉ ES EL VENV Y CÓMO USARLO
+--------------------------------------------------------------------
+¿QUÉ ES?
+  venv = "virtual environment" (entorno virtual).
+  Es una burbuja aislada donde se instalan las librerías de Sayari
+  Med sin mezclarlas con las de otros proyectos de tu PC.
+
+  Ejemplo: Sayari usa streamlit 1.52.0. Otro proyecto puede usar
+  1.30.0. Con venv, cada uno tiene su versión sin conflictos.
+
+CUÁNDO ACTIVARLO:
+  ✅ Encender la app manualmente (streamlit run app.py)
+  ✅ Ejecutar scripts (python scripts\init_db.py)
+  ✅ Instalar librerías (pip install ...)
+  ❌ Abrir CMD solo para ver archivos (dir) → no hace falta
+  ❌ Doble click en iniciar_app.bat → el .bat lo hace solo
+
+CÓMO ACTIVARLO (paso a paso):
+  1. Abre CMD dentro de sayari_med:
+     - Explorador → barra de direcciones → escribe "cmd" → ENTER.
+  2. Ejecuta:
+     venv\Scripts\activate.bat
+  3. Debe aparecer "(venv)" al inicio del prompt:
+     Antes:    C:\Users\...\sayari_med>
+     Después:  (venv) C:\Users\...\sayari_med>
+
+CÓMO DESACTIVARLO:
+  deactivate
+
+TRUCO: ACCESO DIRECTO PARA ABRIR CMD CON VENV LISTO
+  Crea un archivo "abrir_cmd_sayari.bat" en el escritorio con:
+
+     @echo off
+     cd /d "C:\Users\Jackelin\Desktop\sayari_med"
+     call venv\Scripts\activate.bat
+     cmd /k
+
+  Doble click → CMD con venv activo y en la carpeta correcta.
+
+--------------------------------------------------------------------
+PARTE 3: CÓMO ENCENDER LA APLICACIÓN
+--------------------------------------------------------------------
+
+OPCIÓN A) INICIO AUTOMÁTICO (RÁPIDO)
+  - Doble clic en "iniciar_app.bat".
+  - El navegador se abrirá solo en: http://localhost:8501
+
+OPCIÓN B) INICIO MANUAL
+  1. Entra a la carpeta del proyecto.
+  2. Clic en la barra de direcciones, escribe "cmd" y ENTER.
+  3. Ejecuta:
+
+     venv\Scripts\activate.bat
+     streamlit run app.py
+
+  4. Abre tu navegador en: http://localhost:8501
+
+--------------------------------------------------------------------
+PARTE 4: APAGADO Y RESPALDO
+--------------------------------------------------------------------
+- Para apagar: ve a la consola negra y presiona Ctrl + C.
+
+- Respaldo de datos: copia la carpeta "data/" completa
+  (contiene sayari.db, tu base de datos clínica).
+  Guárdala en USB o nube.
+
+- Respaldo del código: copia TODAS las carpetas EXCEPTO:
+  ❌ venv/         (pesa ~400 MB, se regenera)
+  ❌ __pycache__/  (archivos temporales)
+  ❌ static/fotos/ (opcional, son fotos de terapeutas)
+
+  El código real pesa menos de 5 MB.
+
+--------------------------------------------------------------------
+PARTE 5: ARCHIVOS CLAVE DEL PROYECTO
+--------------------------------------------------------------------
+- iniciar_app.bat       → Enciende la app con doble clic.
+- iniciar_admin.bat     → Inspector rápido de la base de datos.
+- requirements.txt      → Librerías necesarias (para reinstalar).
+- app.py                → Router principal (punto de entrada).
+- LEEME.txt             → Este archivo.
+- .env                  → Configuración sensible (NO compartir).
+
+- config/               → Configuración + constantes clínicas.
+- core/                 → Conexión a la base de datos.
+- data/                 → Base de datos SQLite (sayari.db).
+- modelos/              → Tablas: Usuario, Paciente, Sesion,
+                          Evaluacion, Patologia.
+- repositorios/         → Operaciones CRUD sobre las tablas.
+- servicios/            → Lógica clínica (auth, motor, reportes,
+                          anonimización).
+- ui/                   → Interfaz Streamlit (vistas + estilos).
+- assets/               → Logos Sayari.
+- static/fotos/         → Fotos de terapeutas.
+- scripts/              → Scripts auxiliares (init_db, seed).
+- venv/                 → Entorno virtual (NO compartir).
+
+--------------------------------------------------------------------
+PARTE 6: ESTRUCTURA DEL FLUJO CLÍNICO
+--------------------------------------------------------------------
+1. ADMIN crea terapeutas (DNI + letra del apellido = login).
+2. TERAPEUTA entra y registra pacientes.
+3. Bifurcación: ¿vino con diagnóstico médico?
+   - SÍ → motor sugiere tests específicos de la patología.
+   - NO → ficha general + tests por categoría.
+4. TERAPEUTA marca tests aplicados y guarda.
+5. TERAPEUTA registra sesiones con EVA pre/post.
+6. Gráfico de evolución del dolor se genera automáticamente.
+7. Reportes en Excel/CSV disponibles.
+8. ADMIN exporta datos anonimizados para investigación.
+9. BIBLIOTECA CLÍNICA disponible como repaso rápido.
+
+--------------------------------------------------------------------
+PARTE 7: CREDENCIALES INICIALES
+--------------------------------------------------------------------
+Admin:
+  • Usuario:    admin
+  • Contraseña: Sayari2026!
+
+Terapeuta de prueba:
+  • Usuario:    drtest
+  • Contraseña: test123
+
+⚠️ Cambiar las contraseñas después del primer login.
+
+--------------------------------------------------------------------
+PARTE 8: ESTADO DEL PROYECTO
+--------------------------------------------------------------------
+Versión actual: 0.10.0
+
+Sesiones completadas:
+  ✅ Sesión 1:  Cimientos + Base de datos
+  ✅ Sesión 2:  Login + Roles + Marca
+  ✅ Sesión 3:  Panel Admin (terapeutas)
+  ✅ Sesión 4:  Módulo Pacientes
+  ✅ Sesión 5:  Motor Clínico (tests)
+  ✅ Sesión 6:  Módulo Sesiones + EVA + Gráficos
+  ✅ Sesión 7:  Reportes y Exportación
+  ✅ Sesión 8:  Anonimización para investigación
+  ✅ Sesión 9:  Estilos finos + PWA (instalable en iPad/móvil)
+  ✅ Sesión 10: Biblioteca Clínica de Patologías
+               + Formulario completo de terapeutas
+               + Edición de terapeutas
+               + Preparado para practicantes (futuro)
+
+Próximas sesiones:
+  ⏳ Sesión 11: Despliegue en la nube (Streamlit Cloud)
+  ⏳ Sesión 12: Puerta IoT (FastAPI para ESP32)
+  ⏳ Sesión 13: Primer sensor integrado
+  ⏳ Sesión 14: Ficha detallada por test
+  ⏳ Sesión 15: Base de diagnósticos → tests específicos
+
+--------------------------------------------------------------------
+PARTE 9: TIPS Y REGLAS DE ORO
+--------------------------------------------------------------------
+📌 Regla 1: Si vas a escribir "python" o "pip" en CMD,
+   activa el venv primero.
+
+📌 Regla 2: Cuando algo raro pase en Streamlit → reinicia limpio:
+   Ctrl + C, borra __pycache__, vuelve a arrancar.
+
+📌 Regla 3: NUNCA compartas la carpeta venv/ (pesa 400 MB).
+   Se regenera con pip install -r requirements.txt.
+
+📌 Regla 4: Respaldo de la BD = copiar data/sayari.db.
+
+📌 Regla 5: Los exports de investigación (anonimizados) son los
+   únicos que puedes compartir públicamente.
+
+📌 Regla 6: La tabla puente (Paciente ↔ ID anónimo) es
+   CONFIDENCIAL. Solo la ve el admin.
+
+--------------------------------------------------------------------
+PARTE 10: CONTACTO / SOPORTE
+--------------------------------------------------------------------
+Proyecto: Sayari Med
+Marca: Sayari
+Autor: Jackelin
+Ubicación del proyecto: C:\Users\Jackelin\Desktop\sayari_med
+
+====================================================================
+                  FIN DE LA GUÍA — SAYARI MED
+====================================================================
