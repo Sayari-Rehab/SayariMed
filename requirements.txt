@@ -1,0 +1,14 @@
+SQLAlchemy==2.0.44
+passlib[bcrypt]==1.7.4
+bcrypt==4.3.0
+pydantic==2.12.3
+python-dotenv==1.1.1
+streamlit==1.52.0
+fastapi==0.121.0
+uvicorn[standard]==0.38.0
+pandas==2.3.3
+openpyxl==3.1.5
+plotly==6.4.0
+requests==2.32.5
+python-dateutil==2.9.0.post0
+streamlit-drawable-canvas
