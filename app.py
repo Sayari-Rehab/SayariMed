@@ -40,6 +40,32 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# ============================================================
+# AUTO-INICIALIZACIÓN PARA LA NUBE (Turso)
+# ============================================================
+from core.database import crear_tablas, get_session
+from modelos import Usuario
+from servicios.auth import hash_password
+from config.constants import ROL_ADMIN, ESTADO_USUARIO_ACTIVO
+
+# Crear tablas si no existen
+crear_tablas()
+
+# Crear admin si no existe
+with get_session() as db:
+    admin = db.query(Usuario).filter_by(username="admin").first()
+    if not admin:
+        nuevo_admin = Usuario(
+            username="admin",
+            email="admin@sayari.med",
+            password_hash=hash_password("Sayari2026!"),
+            nombre_completo="Administrador Sayari",
+            rol=ROL_ADMIN,
+            estado=ESTADO_USUARIO_ACTIVO,
+            activo=True,
+        )
+        db.add(nuevo_admin)
+        print("✅ Admin creado automáticamente en Turso")
 
 # ============================================================
 # ESTILOS Y PWA
