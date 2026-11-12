@@ -30,7 +30,7 @@ from servicios.auth import (
 # ============================================================
 # CONFIGURACIÓN DE LA PÁGINA
 # ============================================================
-_ruta_favicon = Path(__file__).resolve().parent / "assets" / "logo_favicon.png"
+_ruta_favicon = Path(__file__).resolve().parent / "assets" / "logo-principal.png"
 _favicon = Image.open(_ruta_favicon) if _ruta_favicon.exists() else "🩺"
 
 st.set_page_config(
@@ -90,7 +90,7 @@ def main() -> None:
 
     # --- Sidebar ---
     with st.sidebar:
-        _ruta_sidebar_logo = Path(__file__).resolve().parent / "assets" / "logo_sidebar.png"
+        _ruta_sidebar_logo = Path(__file__).resolve().parent / "assets" / "logo-icono.png"
         if _ruta_sidebar_logo.exists():
             st.image(str(_ruta_sidebar_logo), use_container_width=True)
         else:
